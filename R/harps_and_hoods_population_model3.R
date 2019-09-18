@@ -6,8 +6,9 @@
 ## ICES Journal of Marine Science, 2014
 ## Contact:  Martin Biuw (martin.biuw@hi.no) or Tor Arne Øigård (tor.arne.oigard@nr.no)
 
-#setwd('C:/Users/a5406/Documents/Populasjonsmodellering/rSPAMM/rSPAMM-master')
-source('R/read.ICES.R')
+## Assume the Rstudio project opens in the SAMFH directory, so no change in wd needed
+##setwd('C:/Users/a5406/Documents/Populasjonsmodellering/rSPAMM/rSPAMM-master')
+source('./R/read.ICES.R')
 
 library(TMB)
 
@@ -31,43 +32,41 @@ blogit <- function(x, m, s){
 
 ######################################
 
-fixwinpath <- function() {
-  PATH <- Sys.getenv("PATH")
-  PATH <- paste0(R.home(), "/bin/x64;", PATH)
-  PATH <- paste0("c:/Rtools/mingw_64/bin;", PATH)
-  Sys.setenv(PATH=PATH)
-}
-
-fixwinpath()
-
-compile("R/harps_and_hoods_population_model3.cpp",
+compile("./R/harps_and_hoods_population_model3.cpp",
         "-O1 -g", DLLFLAGS="")
-dyn.load(dynlib("R/harps_and_hoods_population_model3"))
+dyn.load(dynlib("./R/harps_and_hoods_population_model3"))
 
 ###########
 #Data part
 ###########
 #Read in data
-catch_data <- read.table("Data/harpeast/catch_data.dat",header = FALSE)				#Catch data
-pup_production <- read.table("Data/harpeast/pup_production.dat",header = FALSE)			#Pup production estimates
-fecundity <- read.table("Data/harpeast/fecundity.dat",header = FALSE)				#Available fecundity data
+catch_data <- read.table("./Data/harpeast/catch_data.dat",header = FALSE)				#Catch data
+pup_production <- read.table("./Data/harpeast/pup_production.dat",header = FALSE)			#Pup production estimates
+fecundity <- read.table("./Data/harpeast/fecundity.dat",header = FALSE)				#Available fecundity data
 ##Pmatrix <- read.table("./Data/harpeast/wgharp.pma",header = FALSE)				#Birth ogives
 ## Or with collapsed maturity curve:
-Pmatrix <- read.table("Data/harpeast/collapsed.ogi",header = TRUE)				#Birth ogives
+Pmatrix <- read.table("./Data/harpeast/collapsed.ogi",header = TRUE)				#Birth ogives
 Pmatrix <- c(Pmatrix[,2], rep(1, 4))
-priors <- read.table("Data/harpeast/priors.dat",header = FALSE)					#Priors used
+priors <- read.table("./Data/harpeast/priors.dat",header = FALSE)					#Priors used
 ## Add extra priors:
 priors <- rbind(priors, data.frame(V1=c(0.7, 0.5, 0.5, 1), V2=c(0.075, 0.5, 0.5, 1)))
-years.of.prediction = 0											#Number of years to run projections
+years.of.prediction = 15											#Number of years to run projections
 
 ## Read and prepare fish data
 cap <- read.ICES()
-cod <- read.ICES('Data/_9841_9841.xml')
+## Read capelin index from cod stomach contents 
+## prior to 1972 (From Marshall et al. 2000)
+histCap <- read.csv('./Data/histCap.csv')
+histCap$method <- rep('Rec', nrow(histCap))
+cap$Data <- plyr::rbind.fill(histCap[-nrow(histCap),], cap$Data)
+cap$Data$method[which(is.na(cap$Data$method))] <- 'Meas'
+cap$Data$method <- as.factor(cap$Data$method)
+cod <- read.ICES('./Data/_9841_9841.xml')
 
 fish <- cod$Data[,c(1,6,9)]
 names(fish)[c(2,3)] <- c('CodTB', 'CodSSB')
-fish <- merge(fish, cap$Data[,c(1:3)], by='Year', all.x=T, all.y=F)
-names(fish)[c(4,5)] <- c('CapTB', 'CapSSB')
+fish <- merge(fish, cap$Data[,c(1:4)], by='Year', all.x=T, all.y=F)
+names(fish)[c(4,6)] <- c('CapTB', 'CapSSB')
 fish <- fish[which(!is.na(fish$CodTB) & !is.na(fish$CapTB)),]
 fish$suit <- (fish$CapTB/max(fish$CapTB, na.rm=T))-(fish$CodTB/max(fish$CodTB, na.rm=T))
 fish$suit <- fish$suit-min(fish$suit)
@@ -153,3 +152,4 @@ lines(yrs,rep.matrix[indN0,1],col = "blue",lwd = 2)
 points(data$pup_production[,1],data$pup_production[,2], pch=21, bg = 2, cex = 1.2)
 
 plot(yrs,rep.matrix[indFt,1],type = "l",xlab = "Year",ylab = "Fecundity",lwd = 2,col = 4)
+points(data$Fecundity[,1], data$Fecundity[,2], pch=21, bg=2)

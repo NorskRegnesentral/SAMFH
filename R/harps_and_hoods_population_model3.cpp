@@ -182,7 +182,6 @@ Type objective_function<Type>::operator() ()
 
   // Habitat suitability effect
   vector<Type> x(xmax);
-  //DOES THIS NEED TO BE HERE? SEEMS IT THEN SKIPS THE FIRST YEAR
   x(0) = 0;   
 
   // Environmental suitability effect
@@ -195,7 +194,24 @@ Type objective_function<Type>::operator() ()
      counter = counter + 1;
    }
 
+  // Complete the fecundity-vector for projections
+  // Hold fecundity constant after last prey/competition data
+  // Logistic transformation to restrict to (0,1) - EQ 7
 
+
+  for(int i=0;i<=(Npred+1);i++){
+    Ft(CppAD::Integer(counter)) = fmean;
+    logitFt(CppAD::Integer(counter)) = log((fmean+Type(1e-10))/(Type(1)+Type(1e-10)-fmean));  //Could use predefined functions from above instead....
+    counter = counter + 1;
+  }
+  
+  // IS THIS NEEDED?
+  // Logistic transformation to restrict to (0,1) - EQ 7
+  //Ft(CppAD::Integer(counter)) = fmean;
+  //logitFt(CppAD::Integer(counter)) = log((fmean+Type(1e-10))/(Type(1)+Type(1e-10)-fmean));
+  //counter = counter + 1;
+  
+  
   // Initiate of N in year 0 (1945) - EQ 1 and 2
   matrix<Type> N(Nc+Npred+2,Amax);
   for(int i=0;i<Amax;i++){
@@ -275,6 +291,7 @@ Type objective_function<Type>::operator() ()
   //  nll += -dnorm(u(i),Type(0),Type(1),true);
   //}
 
+  REPORT(counter)
   ADREPORT(N0)
   ADREPORT(N1)
   ADREPORT(Ft)
