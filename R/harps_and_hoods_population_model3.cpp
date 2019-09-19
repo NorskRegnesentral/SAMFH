@@ -187,10 +187,20 @@ Type objective_function<Type>::operator() ()
   // Environmental suitability effect
   for(int i=1;i<xmax;i++)
    {
-    x(i) = blogit(suitability(i-1), m, r);		               // Suitability functional response (HOW INCLUDE RANDOM EFFECT??)
+
+//////////////////////////////////////////////////////
+// Fist attempt at using combined 'suitability' index (2 versions):
+//    x(i) = blogit(suitability(i-1), m, r);		               // Suitability functional response (HOW INCLUDE RANDOM EFFECT??)
 //    x(i) = sc*blogit(suitability(i-1), m, r);		               // Suitability functional response (HOW INCLUDE RANDOM EFFECT??)
-    logitFt(CppAD::Integer(counter)) = logit_fmean+x(i);      // Part of Eq 7
-     Ft(CppAD::Integer(counter)) = exp(logitFt(CppAD::Integer(counter)))/(Type(1)+exp(logitFt(CppAD::Integer(counter))));  // Logistic transformation to restrict to (0,1) - EQ 7
+//    logitFt(CppAD::Integer(counter)) = logit_fmean+x(i);      // Part of Eq 7
+
+
+///////////////////////////////////////////////////
+// To include capelin + cod as separate drivers (as per sophies suggestion):
+//    logitFt(CppAD::Integer(counter)) = b0+bCp*cp(i-1)+bCd*cd(i-1)
+/////////////////////////////////////////////////////
+
+    Ft(CppAD::Integer(counter)) = exp(logitFt(CppAD::Integer(counter)))/(Type(1)+exp(logitFt(CppAD::Integer(counter))));  // Logistic transformation to restrict to (0,1) - EQ 7
      counter = counter + 1;
    }
 
