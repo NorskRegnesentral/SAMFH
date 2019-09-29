@@ -8,20 +8,28 @@ output: word_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-## Original state-space method
+# State-space model
+In Øigård and Skaug (2014) a new statistical model for modelling the harp seal pupulation was developed and compared with the curred deterministic model. In this section the original method is reviewed and extensions of the original model are discussed.
+
+### Original state-space method
 
 In the original state-space model developed in Øigård and Skaug (2014), fecundity was modelled as a stochastic-process. For an initial period $y\in[y_0,y_s]$ fecundity $F_y$ is assumed to be constant (due to lack of observations), $F_y = f_{init}$. Starting in year $y_s$ a 1st order auto-regressive (AR) process $x_y = a_1x_{y−1} + u_y$ is used as a
 perturbation around $f_{init}$. Here, $a_1$ is the auto-regressive parameter and $u_y$ is a zero mean normally distributed “innovation term” with standard deviation $\sigma$. Since we require $0\leq F_y\leq 1$ we employ the logistic transformation
 $$F_y=\frac{\exp (\xi +x_y)}{1+\exp (\xi + x_y)},$$
 where $\xi = \log \{f_{init}/(1-f_{init})\}$.
 
-## Extended state-space model to include prey availability
+### Extended state-space model to include prey availability
 
 We extend the original state-space model to include availability of capelin and cod. Capelin and cod have proved to have a significant effect on the condition of the harp seals. Capelin has a positive relationship, the more capelin, the better the condition of the harp seals. Cod, however, has a negative relationship with condition of the harp seals as it preys on capelin and therefore acts as a competitor for harp seals. We propose to replace the AR(1) process in the original state-space model with the following mixed model $x_y = a_1x_{y−1} + a_2capelin + a_3cod + u_y$ as a
 perturbation around $f_{init}$. Here, $a_1$ is the auto-regressive parameter, $a_2$ is the fixed effect of capelin, $a_3$ is the fixed effect of cod, and $u_y$ is a zero mean normally distributed “innovation term” with standard deviation $\sigma$.
 
 Data on total biomass ($TB$) are taken from ICES stock assessments: *http://standardgraphs.ices.dk/stockList.aspx*. We use capelin total biomass in the Barents Sea/Norwegian Sea as an index of prey availability, and total biomass of East Arctic cod as an index of competition. While cod data go back to 1946, capelin data are (so far) only available from 1972 onwards. However, an estimate of capelin biomass, reconstructed based on stomach contents of cod (Marshall et al. 2000), is available for the period 1946-1972. These data (except the 1972 data), have also been included. In modelling the total biomass of capelin and cod has been normalized.
 
+### Results
+A first look comparison between the original state-space model and the extended model which includes capelin and cod data.
+
+![Modelled pup abundance using the original state-space model (red) and the extended model (blue).](Data/Results/PupAbundance.png)
+![Modelled fecundity using the original state-space model (red) and the extended model (blue).](Data/Results/FecundityEstimates.png)
 ## Sophies proposal
 
 For the fecundity of the seals, let's sort out some definitions. 
