@@ -28,8 +28,11 @@ Data on total biomass ($TB$) are taken from ICES stock assessments: *http://stan
 ### Results
 A first look comparison between the original state-space model and the extended model which includes capelin and cod data.
 
-![Modelled pup abundance using the original state-space model (red) and the extended model (blue).](Data/Results/PupAbundance.png)
-![Modelled fecundity using the original state-space model (red) and the extended model (blue).](Data/Results/FecundityEstimates.png)
+![Modelled pup abundance using the original state-space model (red) and the extended model (blue).](../Data/Results/PupAbundance.png){ width=20%}
+
+
+![Modelled fecundity using the original state-space model (red) and the extended model (blue).](../Data/Results/FecundityEstimates.png)
+
 ## Sophies proposal
 
 For the fecundity of the seals, let's sort out some definitions. 
