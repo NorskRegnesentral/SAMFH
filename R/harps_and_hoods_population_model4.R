@@ -45,7 +45,7 @@ pup_production <- read.table("./Data/harpeast/pup_production.dat",header = FALSE
 fecundity <- read.table("./Data/harpeast/fecundity.dat",header = FALSE)				#Available fecundity data
 ##Pmatrix <- read.table("./Data/harpeast/wgharp.pma",header = FALSE)				#Birth ogives
 ## Or with collapsed maturity curve:
-Pmatrix <- read.table("./Data/harpeast/collapsed.ogi",header = TRUE)				#Birth ogives
+Pmatrix <- read.table("../Data/harpeast/collapsed.ogi",header = TRUE)				#Birth ogives
 Pmatrix <- c(Pmatrix[,2], rep(1, 4))
 priors <- read.table("./Data/harpeast/priors.dat",header = FALSE)					#Priors used
 
@@ -114,7 +114,7 @@ parameters$M0tilde= logit(M0init)
 parameters$ftilde = logit(finit)
 ##parameters$logBeta = log(binit)
 parameters$logBetaCap = sign(bCapinit) * log(abs(bCapinit))
-parameters$logBetaCod = sign(bCapinit) * log(abs(bCapinit))
+parameters$logBetaCod = sign(bCodinit) * log(abs(bCodinit))
 parameters$logSdProc = log(Procinit)
 parameters$logSdObs = log(Obsinit)
 ##parameters$logitp = log(Prinit)

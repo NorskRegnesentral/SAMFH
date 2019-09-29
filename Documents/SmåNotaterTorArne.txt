@@ -1,0 +1,8 @@
+* Ikke noen utvidelse av state-space. Fortsatt en deterministisk modell.
+* Endret noe med cod, parameteren. Den var satt lik capelin.
+* Kan man si -beta_cod siden vi vet den er negativ og estimere beta_cod?
+* Tror ikke fmean er korrekt i likelihooden for Ft. Tror det skal være de faktiske observasjonene...Men hva 
+	er de faktiske observasjonene for perioder vi ikke har data? Skal vi interpolere?
+* I koden sier vi: "CURRENTLY DOES NOT account for SE VALUES FROM FECUNDITY OBSERVATIONS".
+	Men for å beregne likelihooden så bruker vi SE....
+* Vi bruker F og ikke Ft....men F er en random effekt vektor. Vi bruker jo ikke random effekts......Dette blir litt rart...

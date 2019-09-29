@@ -1,2 +1,2 @@
-# SAMFH
-Stochastic Assessment Model for Harp Seals
+# SHAM
+Stochastic Harp Seal Assessment Model
