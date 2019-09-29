@@ -6,3 +6,6 @@
 * I koden sier vi: "CURRENTLY DOES NOT account for SE VALUES FROM FECUNDITY OBSERVATIONS".
 	Men for å beregne likelihooden så bruker vi SE....
 * Vi bruker F og ikke Ft....men F er en random effekt vektor. Vi bruker jo ikke random effekts......Dette blir litt rart...
+
+
+Tried new approach to include cod and capelin lin the model. Original state-space model is added for reference. See hessm.R and hessm.cpp. Extended model is in SHAM.R and SHAM.CPP. Created a Results folder in the Data folder for storing figures. Added a markdown script called ExtensionOfStochasticModel.Rmd to the Documents foder to describe this approach. Sophies approach is included as well.

@@ -141,24 +141,26 @@ b1est = ilogit(opt$par[6])
 b2est = ilogit(opt$par[7])
 sigmaest = exp(opt$par[8])    
 
+save_results = FALSE
+if(save_results){
 #Save results
 #Original model
 #filename = "OriginalStateSpaceModel.Rdat"
 #With prey data
-filename = "NewStateSpaceModel.Rdat"
-save(Kest = Kest,Mest = Mest,M0est=M0est,fest = fest,aest = aest,b1est = b1est,b2est=b2est,sigmaest = sigmaest,N1 = N1,N1sd = N1sd,N0 = N0,N0sd = N0sd,Ft = Ft,Ftsd = Ftsd,file = filename)
-
+  filename = "NewStateSpaceModel.Rdat"
+  save(Kest = Kest,Mest = Mest,M0est=M0est,fest = fest,aest = aest,b1est = b1est,b2est=b2est,sigmaest = sigmaest,N1 = N1,N1sd = N1sd,N0 = N0,N0sd = N0sd,Ft = Ft,Ftsd = Ftsd,file = filename)
+}
 #allsd<-sqrt(diag(solve(rep$jointPrecision)))
 #plsd <- obj$env$parList(par=allsd)
-X11("",9,7)
-plot(1946:2035,rep.matrix[indN1,1],type = "l",xlab = "Year",ylab = "Abundance",xlim = c(1946,2030),ylim = c(0,2000000),lwd = 3,col = "darkgreen")
-lines(1946:2035,rep.matrix[indN0,1],col = "blue",lwd = 3)
-lines(data$pup_production[,1],data$pup_production[,2],type = "p",col = "red",cex = 1.2,pch = 16)
+# X11("",9,7)
+# plot(1946:2035,rep.matrix[indN1,1],type = "l",xlab = "Year",ylab = "Abundance",xlim = c(1946,2030),ylim = c(0,2000000),lwd = 3,col = "darkgreen")
+# lines(1946:2035,rep.matrix[indN0,1],col = "blue",lwd = 3)
+# lines(data$pup_production[,1],data$pup_production[,2],type = "p",col = "red",cex = 1.2,pch = 16)
 
 #################
 #Plot figures
 
-load("Data/Results/NewStateSpaceModel.Rdat")
+#load("Data/Results/NewStateSpaceModel.Rdat")
 dfnew=data.frame(Year=1946:2035,
               N1new=N1,
               N0new=N0,
@@ -170,7 +172,7 @@ dfnew=data.frame(Year=1946:2035,
               Fnewl=Ft-1.96*Ftsd,
               Fnewu=F+1.96*Ftsd)
 
-load("../Data/Results/OriginalStateSpaceModel.rdat")
+load("./Data/Results/OriginalStateSpaceModel.rdat")
 dfold=data.frame(Year=1946:2035,
                  N1old=N1,
                  N0old=N0,
@@ -182,14 +184,25 @@ dfold=data.frame(Year=1946:2035,
                  Foldl=Ft-1.96*Ftsd,
                  Foldu=F+1.96*Ftsd)
 
+df = data.frame(dfnew,dfold)
 
 library(ggplot2)
 theme_set(theme_minimal())
 
+#Pup abundance
 X11("",9,7)
-ggplot(data=dfnew,aes(x=Year))+
-  geom_line(aes(y=N0new))+
+ggplot(data=df,aes(x=Year))+
+  geom_line(aes(y=N0new),colour="royalblue",size = 1.5)+
   geom_ribbon(aes(y = N0new,ymin = N0newl, ymax = N0newu),fill='lightblue',alpha=0.5)+
-  geom_line(aes(y=PelFY),colour='red')+
-  geom_ribbon(aes(y = PelFY,ymin = PelFY05, ymax = PelFY95),fill='lightpink',alpha=0.5)+
-  labs(x='Year',y='Fishing mortality (Fys)',title='Annual fishing mortality')
+  geom_line(aes(y=N0old),colour='red',size=1.5)+
+  geom_ribbon(aes(y = N0old,ymin = N0oldl, ymax = N0oldu),fill='lightpink',alpha=0.5)+
+  labs(x='Year',y='Pup abundance',title='')
+
+#Fecundity
+X11("",9,7)
+ggplot(data=df,aes(x=Year))+
+  geom_line(aes(y=Fnew),colour="royalblue",size = 1.5)+
+  #geom_ribbon(aes(y = Fnew,ymin = Fnewl, ymax = Fnewu),fill='lightblue',alpha=0.5)+
+  geom_line(aes(y=Fold),colour='red',size = 1.5)+
+  #geom_ribbon(aes(y = Fold,ymin = Foldl, ymax = Foldu),fill='lightpink',alpha=0.5)+
+  labs(x='Year',y='Modelled fecundity',title='')
