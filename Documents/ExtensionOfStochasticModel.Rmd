@@ -71,14 +71,14 @@ This can all be embedded in the seal population model which updates the female p
 
 Sophie, I have some troubles linking your proposal to the current model. I have tried to review the most important equations in the current model below. The syntax does not agree with your terms but I hope we will be able to understand each other. In the population dynamics model we have the following iterating equations.
 
-$$N_{1,y} = (N_{0,y-1}-C_{0,y-1})s_0,$$
-$$N_{a,y} = (N_{a-1,y-1}-C_{a-1,y-1})s_{1+},\quad a = 2,\ldots,A-1,$$
+$$N_{1,y} = (N_{0,y-1}-C_{0,y-1})s_0,\quad\quad (1)$$
+$$N_{a,y} = (N_{a-1,y-1}-C_{a-1,y-1})s_{1+},\quad a = 2,\ldots,A-1,\quad\quad (2)$$
 $$N_{A,y} = [(N_{A-1,y-1}-C_{A-1,y-1})+(N_{A,y-1}-C_{A,y-1})]s_{1+}$$.
 
 Here $C_{a,y}$ is the catch of age group $a$ in year $y$, $s_0$ is the pup mortality, and $s_{1+}$ is the 1+ mortality.
 
 The modelled pup abundance for a given year $y$ is then given by
-$$N_{0,y} = \frac{F_y}{2}\sum_{a=1}^Ap_{a,y}N_{a,y},$$
+$$N_{0,y} = \frac{F_y}{2}\sum_{a=1}^Ap_{a,y}N_{a,y},\quad\quad (3)$$
 
 so we need to identify quantities in your idea to make it fit into the current framework. If I understand correct your $n_{pregnant,t}$ is the number of pregnant females in year $t$. This is for is for all age groups? Or is it? In our framework $N_{a,y}/2$ is the number of females in in each age group. So in our case would the number of females in year $t$ or $y$ be $F_y\sum N_{a,y}/2$? (The number of females for an age group $a$ in year $y$ is $N_{a,y}/2$). Hence, the total number of females (pregnant + not pregnant) for all age groups is $\sum_a N_{a,y}/2$. It is assumed that half of the population is females). I'm struggling a bit to see how to incorporate your equations in the model. Maybe we have to rethink the model formulation then? Maybe it is as easy as saying that in your
 $$n_{pregnant,t,age}\sim Binomial(n_t,\phi_{t,age})$$
@@ -87,8 +87,16 @@ we say that your $n_t$ (the number of females in the population in year $t$) is 
 $$n_{pups}\sim Binomial(n_{pregnant,t},Q)$$
 but does that give the total number of pups for all years, which is not really interesting, or should it say $n_{pups,t}$, which would be our $N_{0,y}$? If that is the case and what I describe above is correct then I believe we have linked the equations so that they work together. 
 
-Next, we would need to identify $F_y$, as I'm sure it would be usefull, and also required that we are able to show what values of fecundity are used each year.
+We should try to sum this up and use the same notation and write down the equations so that Sophies equations fits into the model framework, or rewrite the model framework to make it fit Sophies equations.
+
+Next, we would need to identify $F_y$, as I'm sure it would be usefull, and also required that we are able to show what values of fecundity are used each year. In your equations you have that
+$$\phi_{t,age} = f(\vec{\theta},\vec{x}) ogive(age).$$
+
+First I wonder if it should be $f_t(\vec{\theta},\vec{x})$? Could you then say that your $f_t(\vec{\theta},\vec{x})$ and the $F_y$ are the same and that
+$$
+F_y = f_t(\vec{\theta},\vec{x}) = \phi_{t,age} / ogive(age)?
+$$
 
 In your text you mention the natality rate $\eta$ but I cannot see where it is used. Am I missing something?
 
-Now it's just implementing it.... Remember in TMB you cannot simulate, the model formulation you describe looks like you have simulation in your mind, or maybe not :-).
+Then when we understand this it's just implementing it.... Remember in TMB you cannot simulate, the model formulation you describe looks like you have simulation in your mind, or maybe not :-).
