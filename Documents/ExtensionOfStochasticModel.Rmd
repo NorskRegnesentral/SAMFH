@@ -89,5 +89,6 @@ but does that give the total number of pups for all years, which is not really i
 
 Next, we would need to identify $F_y$, as I'm sure it would be usefull, and also required that we are able to show what values of fecundity are used each year.
 
+In your text you mention the natality rate $\eta$ but I cannot see where it is used. Am I missing something?
 
 Now it's just implementing it.... Remember in TMB you cannot simulate, the model formulation you describe looks like you have simulation in your mind, or maybe not :-).
