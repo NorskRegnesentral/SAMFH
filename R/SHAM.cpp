@@ -64,7 +64,7 @@ Type objective_function<Type>::operator() ()
   PARAMETER(Mtilde);                       //Natural adult mortality
   PARAMETER(M0tilde);                      //Natural pup mortality
   PARAMETER(ftilde);                       //Mean fecundity rate
-  //PARAMETER(atilde);                       //AR(1) parameter
+  PARAMETER(atilde);                       //AR(1) parameter
   PARAMETER(b1tilde);
   PARAMETER(b2tilde);
   PARAMETER(logSigma);                     //sigma
@@ -75,7 +75,7 @@ Type objective_function<Type>::operator() ()
   Type M = ilogit(Mtilde);
   Type M0 = ilogit(M0tilde);
   Type fmean = ilogit(ftilde);
-  //Type a = bound(atilde);
+  Type a = bound(atilde);
   Type b1 = ilogit(b1tilde);
   Type b2 = ilogit(b2tilde);
   Type Sigma = exp(logSigma);
@@ -97,10 +97,10 @@ Type objective_function<Type>::operator() ()
   b(1) = M;                                      // Natural adult mortality
   b(2) = M0;                                     // Natural pup mortality
   b(3) = fmean;                                  // Mean fecundity rate before state-space process        
-  //b(4) = a;                                      // AR 1 parameter
-  b(4) = b1;
-  b(5) = b2;
-  b(6) = Sigma;                                  // Noise variance
+  b(4) = a;                                      // AR 1 parameter
+  b(5) = b1;
+  b(6) = b2;
+  b(7) = Sigma;                                  // Noise variance
  
 
   // Preliminary calculations - Preparations of Catch data
@@ -157,7 +157,7 @@ Type objective_function<Type>::operator() ()
   // AR(1)-process
   for(int i=1;i<xmax;i++)  
    {
-     x(i) = 0*x(i-1) + b1*cap(i) - b2*cod(i) + Sigma*u(i-1);		               // AR1 update
+     x(i) = a*x(i-1) + b1*cap(i) - b2*cod(i) + Sigma*u(i-1);		               // AR1 update
      logitFt(CppAD::Integer(counter)) = logit_fmean+x(i);      // Part of Eq 7
      Ft(CppAD::Integer(counter)) = exp(logitFt(CppAD::Integer(counter)))/(Type(1)+exp(logitFt(CppAD::Integer(counter))));  // Logistic transformation to restrict to (0,1) - EQ 7
      counter = counter + 1;

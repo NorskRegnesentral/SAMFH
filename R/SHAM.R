@@ -91,7 +91,7 @@ Kinit = 2000000								#Initial population size
 Minit = 0.09									#Natural adult mortality
 M0init = 0.27								#Natural pup mortality
 finit = 0.7									#Mean fecundity rate
-#ainit = 0.7									#AR(1) parameter
+ainit = 0.7									#AR(1) parameter
 b1init = 0.4
 b2init = 0.6
 sigmainit = 0.85								#sigma
@@ -102,7 +102,7 @@ parameters$logK= log(Kinit)
 parameters$Mtilde= logit(Minit)				
 parameters$M0tilde= logit(M0init)				
 parameters$ftilde = logit(finit)
-#parameters$atilde = ainit
+parameters$atilde = ainit
 parameters$b1tilde = logit(b1init)
 parameters$b2tilde = logit(b2init)
 parameters$logSigma = log(sigmainit)
@@ -194,8 +194,8 @@ X11("",6,4)
 ggplot(data=df,aes(x=Year))+
   geom_line(aes(y=N0new),colour="royalblue",size = 1.5)+
   geom_ribbon(aes(y = N0new,ymin = N0newl, ymax = N0newu),fill='lightblue',alpha=0.5)+
-  geom_line(aes(y=N0old),colour='red',size=1.5)+
-  geom_ribbon(aes(y = N0old,ymin = N0oldl, ymax = N0oldu),fill='lightpink',alpha=0.5)+
+  #geom_line(aes(y=N0old),colour='red',size=1.5)+
+  #geom_ribbon(aes(y = N0old,ymin = N0oldl, ymax = N0oldu),fill='lightpink',alpha=0.5)+
   labs(x='Year',y='Pup abundance',title='')
 
 #Fecundity
@@ -203,6 +203,6 @@ X11("",9,7)
 ggplot(data=df,aes(x=Year))+
   geom_line(aes(y=Fnew),colour="royalblue",size = 1.5)+
   #geom_ribbon(aes(y = Fnew,ymin = Fnewl, ymax = Fnewu),fill='lightblue',alpha=0.5)+
-  geom_line(aes(y=Fold),colour='red',size = 1.5)+
+  #geom_line(aes(y=Fold),colour='red',size = 1.5)+
   #geom_ribbon(aes(y = Fold,ymin = Foldl, ymax = Foldu),fill='lightpink',alpha=0.5)+
   labs(x='Year',y='Modelled fecundity',title='')
