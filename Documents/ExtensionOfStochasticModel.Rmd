@@ -87,8 +87,6 @@ we say that your $n_t$ (the number of females in the population in year $t$) is 
 $$n_{pups}\sim Binomial(n_{pregnant,t},Q)$$
 but does that give the total number of pups for all years, which is not really interesting, or should it say $n_{pups,t}$, which would be our $N_{0,y}$? If that is the case and what I describe above is correct then I believe we have linked the equations so that they work together. 
 
-We should try to sum this up and use the same notation and write down the equations so that Sophies equations fits into the model framework, or rewrite the model framework to make it fit Sophies equations.
-
 Next, we would need to identify $F_y$, as I'm sure it would be usefull, and also required that we are able to show what values of fecundity are used each year. In your equations you have that
 $$\phi_{t,age} = f(\vec{\theta},\vec{x}) ogive(age).$$
 
@@ -98,5 +96,8 @@ F_y = f_t(\vec{\theta},\vec{x}) = \phi_{t,age} / ogive(age)?
 $$
 
 In your text you mention the natality rate $\eta$ but I cannot see where it is used. Am I missing something?
+
+We should try to sum this up and use the same notation and write down the equations so that Sophies equations fits into the model framework, or rewrite the model framework to make it fit Sophies equations.
+
 
 Then when we understand this it's just implementing it.... Remember in TMB you cannot simulate, the model formulation you describe looks like you have simulation in your mind, or maybe not :-).
